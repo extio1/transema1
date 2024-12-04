@@ -151,7 +151,9 @@ public class SemanticFunction {
 
     public SemanticFunction(String isel, Rule rule) {
         this.handleTerm(rule.body());
+    }
 
+    private void printDelta(){
         changes.forEach((c) -> {
             System.out.println(c.lhs.name);
             System.out.println(c.lhs.location);

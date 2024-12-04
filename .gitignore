@@ -33,3 +33,6 @@ bin/
 
 ### ast ###
 ast_*
+
+### cmake build files ###
+*build/*

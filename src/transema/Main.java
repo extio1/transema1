@@ -16,10 +16,12 @@ public class Main {
         String filePath = args[0];
 
         SemaRulesLoader loader = new SemaRulesLoader();
-        TransemaCodegen emitter = new LLVMCodegen();
+        TransemaCodegen codegen = new LLVMCodegen();
         Map<String, Rule> ISEL2Rule = loader.load(filePath);
 
-        ISEL2Rule.forEach((k, v) -> {
+        if (!ISEL2Rule.isEmpty()){
+            codegen.createNewModule("llvm_sema_module.ll");
+            ISEL2Rule.forEach((k, v) -> {
 //            System.out.println(k);
 //            KTermAnalyser.printKTerm(v.body());
 //            try {
@@ -27,8 +29,12 @@ public class Main {
 //            } catch (IOException e) {
 //                throw new RuntimeException(e);
 //            }
-            SemanticFunction semanticFunction = new SemanticFunction(k, v);
-            emitter.emit(semanticFunction);
-        });
+                SemanticFunction semanticFunction = new SemanticFunction(k, v);
+                codegen.emit(semanticFunction);
+            });
+            codegen.cleanNativeState();
+        }
+
+
     }
 }

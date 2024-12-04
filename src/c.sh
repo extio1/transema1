@@ -8,5 +8,5 @@ SOURCES="transema/KTermAnalyser.java
         transema/codegen/TransemaCodegen.java
         transema/codegen/LLVMCodegen.java"
 
-# javac -h "transema/codegen/native" -cp "/kframework/usr/lib/kframework/lib/java/*":. $SOURCES
-javac -cp "/kframework/usr/lib/kframework/lib/java/*":. $SOURCES
+# javac -h "transema/codegen/native" -cp "$(dirname $0)/../kframework/usr/lib/kframework/lib/java/*":. $SOURCES
+javac -cp "$(dirname $0)/../kframework/usr/lib/kframework/lib/java/*":. $SOURCES

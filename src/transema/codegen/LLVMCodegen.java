@@ -7,6 +7,14 @@ public class LLVMCodegen extends TransemaCodegen {
         System.loadLibrary("LLVMCodegen");
     }
 
+    private long nativeState = 0;
+
     @Override
     public native void emit(SemanticFunction semanticFunction);
+
+    @Override
+    public native void createNewModule(String name);
+
+    @Override
+    public native void cleanNativeState();
 }

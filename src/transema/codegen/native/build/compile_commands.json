@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/build",
+  "command": "/usr/bin/g++ -DLLVMCodegen_EXPORTS -I/media/extio1/Data/llvm-project/llvm/include -I/media/extio1/Data/llvm-project/build/include -I/usr/lib/jvm/default-java/include -I/usr/lib/jvm/default-java/include/linux -I/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/include -g -fPIC -o CMakeFiles/LLVMCodegen.dir/lib/JNIInterface.cpp.o -c /media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/lib/JNIInterface.cpp",
+  "file": "/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/lib/JNIInterface.cpp"
+},
+{
+  "directory": "/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/build",
+  "command": "/usr/bin/g++ -DLLVMCodegen_EXPORTS -I/media/extio1/Data/llvm-project/llvm/include -I/media/extio1/Data/llvm-project/build/include -I/usr/lib/jvm/default-java/include -I/usr/lib/jvm/default-java/include/linux -I/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/include -g -fPIC -o CMakeFiles/LLVMCodegen.dir/lib/LLVMCodegen/LLVMCodegen.cpp.o -c /media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/lib/LLVMCodegen/LLVMCodegen.cpp",
+  "file": "/media/extio1/Data/edu/diploma/transema1/src/transema/codegen/native/llvmCodegen/lib/LLVMCodegen/LLVMCodegen.cpp"
+}
+]

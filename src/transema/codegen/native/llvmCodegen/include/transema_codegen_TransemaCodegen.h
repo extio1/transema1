@@ -9,11 +9,27 @@ extern "C" {
 #endif
 /*
  * Class:     transema_codegen_TransemaCodegen
+ * Method:    createNewModule
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_transema_codegen_TransemaCodegen_createNewModule
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     transema_codegen_TransemaCodegen
  * Method:    emit
  * Signature: (Ltransema/SemanticFunction;)V
  */
 JNIEXPORT void JNICALL Java_transema_codegen_TransemaCodegen_emit
   (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     transema_codegen_TransemaCodegen
+ * Method:    cleanNativeState
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_transema_codegen_TransemaCodegen_cleanNativeState
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }
