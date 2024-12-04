@@ -10,6 +10,9 @@ import org.kframework.main.AbstractKModule;
 import java.util.Collections;
 import java.util.List;
 
+import java.io.File;
+import java.io.IOException;
+
 public class TransemaKModule extends AbstractKModule {
     public TransemaKModule() {
     }
@@ -19,7 +22,7 @@ public class TransemaKModule extends AbstractKModule {
         mods.add(new AbstractModule() {
             protected void configure() {
                 MapBinder<String, Backend> mapBinder = MapBinder.newMapBinder(this.binder(), String.class, Backend.class);
-                mapBinder.addBinding("transema").to(TransemaBackend.class);
+                mapBinder.addBinding("llvm").to(TransemaBackend.class);
             }
         });
         return mods;

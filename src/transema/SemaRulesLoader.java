@@ -2,6 +2,7 @@ package transema;
 
 import org.kframework.attributes.Source;
 import org.kframework.definition.Module;
+import org.kframework.definition.Production;
 import org.kframework.definition.Rule;
 import org.kframework.kompile.CompiledDefinition;
 import org.kframework.main.GlobalOptions;
@@ -38,6 +39,15 @@ public class SemaRulesLoader {
         if(instructionSemaModuleOpt.isDefined()){
             Module instructionSemaModule = instructionSemaModuleOpt.get();
             Set<Rule> instructionSemaRules = instructionSemaModule.rules();
+            Set<Production> productionSet = instructionSemaModule.productions();
+
+//            Iterator<Production> prodIt = productionSet.iterator();
+//            while(prodIt.hasNext()){
+//                Production pr = prodIt.next();
+//                System.out.print(pr);
+//                System.out.print(" Terminal: " + pr.arity());
+//                System.out.println(" Arity: " + pr.arity());
+//            }
 
             Iterator<Rule> it = instructionSemaRules.iterator();
             while(it.hasNext()) {

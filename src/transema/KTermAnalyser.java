@@ -11,10 +11,20 @@ import org.kframework.kore.KSequence;
 import org.kframework.kore.KToken;
 import org.kframework.kore.KVariable;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class KTermAnalyser {
     static Map<Class<? extends K>, List<String>> instances = new HashMap<>();
@@ -63,42 +73,76 @@ public class KTermAnalyser {
         }
     }
 
-    public static void printKTerm(K term, int tabCount) {
-        for (int i = 0; i < tabCount; i++){
-            System.out.print("  ");
+    public static void printKTerm(K term){
+        dump(term, 0, System.out::print);
+    }
+
+    public static void printKTerm(K term, String filename) throws IOException {
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"));
+
+        dump(term, 0, (s) -> {
+            try {
+                writer.write(s);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        writer.close();
+    }
+
+    public static void dump(K term, int tabCount, Consumer<String> output) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tabCount; i++) {
+            sb.append("  ");
         }
-        System.out.print(term.getClass()+"--");
+
+        String fullClassName = term.getClass().toString();
+        String simpleName = fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+        if (simpleName.contains("$")) {
+            simpleName = simpleName.substring(simpleName.lastIndexOf('$') + 1);
+        }
+        sb.append(simpleName).append(" ");
 
         if (term instanceof ADT.KAs) {
             KAs kAs = (ADT.KAs) term;
-            System.out.println(kAs);
+            sb.append(kAs.toString()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KLabel) {
             KLabel kLabel = (ADT.KLabel) term;
-            System.out.println(kLabel.name());
+            sb.append(kLabel.name()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KList) {
             KList kList = (ADT.KList) term;
-            System.out.println(kList.size());
+            sb.append(kList.size()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KSequence) {
             KSequence kSequence = (ADT.KSequence) term;
-            System.out.println(kSequence);
+            sb.append(kSequence.toString()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KToken) {
             KToken kToken = (ADT.KToken) term;
-            System.out.println(kToken.s());
+            sb.append(kToken.s()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KVariable) {
             KVariable kVariable = (ADT.KVariable) term;
-            System.out.print(kVariable.name()+"==");
-            System.out.println(kVariable);
+            sb.append(kVariable.name()).append("\n");;
+            output.accept(sb.toString());
         } else if (term instanceof ADT.KApply) {
             KApply kApply = (ADT.KApply) term;
             List<K> kParams = kApply.items();
-            System.out.print("Label: " + kApply.klabel() + "==");
-            System.out.println("N Arguments: " + kParams.size());
-            kParams.forEach((t) -> printKTerm(t, tabCount+1));
+            sb.append(kApply.klabel()).append("\n");
+            output.accept(sb.toString());
+
+            kParams.forEach((t) -> dump(t, tabCount + 1, output));
         } else if (term instanceof ADT.KRewrite) {
             KRewrite kRewrite = (ADT.KRewrite) term;
-            System.out.println(kRewrite);
-            printKTerm(kRewrite.left(), tabCount+1);
-            printKTerm(kRewrite.right(), tabCount+1);
+            sb.append(kRewrite.toString()).append("\n");;
+            output.accept(sb.toString());
+
+            dump(kRewrite.left(), tabCount + 1, output);
+            dump(kRewrite.right(), tabCount + 1, output);
         }
     }
+
 }

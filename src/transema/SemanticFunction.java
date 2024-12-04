@@ -149,8 +149,9 @@ public class SemanticFunction {
     private List<AssignRight> readArgs = new ArrayList<>();
     private List<SemanticStateChange> changes = new ArrayList<>();
 
-    public void emitCpp(String isel, Rule rule) {
+    public SemanticFunction(String isel, Rule rule) {
         this.handleTerm(rule.body());
+
         changes.forEach((c) -> {
             System.out.println(c.lhs.name);
             System.out.println(c.lhs.location);
