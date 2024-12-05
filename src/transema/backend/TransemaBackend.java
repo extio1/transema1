@@ -1,39 +1,22 @@
 package transema.backend;
 
-import org.kframework.compile.Backend;
-import org.kframework.definition.Definition;
-import org.kframework.definition.Module;
-import org.kframework.definition.ModuleTransformer;
+import com.google.inject.Inject;
+import org.kframework.backend.java.symbolic.JavaBackend;
 import org.kframework.kompile.CompiledDefinition;
+import org.kframework.kompile.KompileOptions;
+import org.kframework.main.GlobalOptions;
+import org.kframework.utils.errorsystem.KExceptionManager;
+import org.kframework.utils.file.FileUtil;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
+public class TransemaBackend extends JavaBackend {
+    @Inject
+    public TransemaBackend(KExceptionManager kem, FileUtil files, GlobalOptions globalOptions, KompileOptions kompileOptions) {
+        super(kem, files, globalOptions, kompileOptions);
+    }
 
-public class TransemaBackend implements Backend {
     @Override
     public void accept(CompiledDefinition compiledDefinition) {
         System.out.println("TRANSEMA ACCEPTS COMPILED DEFINITION");
         System.exit(42);
-    }
-
-    @Override
-    public Function<Definition, Definition> steps() {
-        return null;
-    }
-
-    @Override
-    public Function<Module, Module> specificationSteps(Definition definition) {
-        return null;
-    }
-
-    @Override
-    public Set<String> excludedModuleTags() {
-        return new HashSet<>();
-    }
-
-    @Override
-    public ModuleTransformer restoreDefinitionModulesTransformer(Definition kompiledDefinition) {
-        return Backend.super.restoreDefinitionModulesTransformer(kompiledDefinition);
     }
 }

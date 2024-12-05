@@ -21,8 +21,6 @@ public class TransemaKModule extends AbstractKModule {
     }
 
     public List<Module> getKompileModules() {
-        System.out.println("ASDASDASDS");
-        System.err.println("ASDAMSDLKMAS");
 
         List<Module> mods = super.getKompileModules();
         mods.add(new AbstractModule() {
