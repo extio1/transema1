@@ -35,4 +35,4 @@ bin/
 ast_*
 
 ### cmake build files ###
-*build/*
+src/transema/codegen/native/build/*

@@ -1,8 +1,11 @@
 package transema.backend;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Module;
 import com.google.inject.multibindings.MapBinder;
 import org.apache.commons.lang3.tuple.Pair;
+import org.kframework.backend.llvm.LLVMBackend;
+import org.kframework.backend.llvm.LLVMBackendKModule;
 import org.kframework.backend.llvm.LLVMKompileOptions;
 import org.kframework.compile.Backend;
 import org.kframework.main.AbstractKModule;
@@ -17,14 +20,18 @@ public class TransemaKModule extends AbstractKModule {
     public TransemaKModule() {
     }
 
-    public List<com.google.inject.Module> getKompileModules() {
-        List<com.google.inject.Module> mods = super.getKompileModules();
+    public List<Module> getKompileModules() {
+        System.out.println("ASDASDASDS");
+        System.err.println("ASDAMSDLKMAS");
+
+        List<Module> mods = super.getKompileModules();
         mods.add(new AbstractModule() {
             protected void configure() {
                 MapBinder<String, Backend> mapBinder = MapBinder.newMapBinder(this.binder(), String.class, Backend.class);
-                mapBinder.addBinding("llvm").to(TransemaBackend.class);
+                mapBinder.addBinding("transema").to(TransemaBackend.class);
             }
         });
+
         return mods;
     }
 

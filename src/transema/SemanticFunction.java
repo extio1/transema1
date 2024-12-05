@@ -153,6 +153,10 @@ public class SemanticFunction {
         this.handleTerm(rule.body());
     }
 
+    public List<AssignLeft> getWriteArgs() { return writeArgs; }
+    public List<AssignRight> getReadArgs() { return readArgs; }
+    public List<SemanticStateChange> getSemanticStateChange() { return changes; }
+
     private void printDelta(){
         changes.forEach((c) -> {
             System.out.println(c.lhs.name);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <jni.h>
+
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
@@ -8,10 +10,14 @@
 
 class LLVMCodegen {
 public:
-    LLVMCodegen();
-    ~LLVMCodegen();
+  LLVMCodegen(llvm::StringRef ModuleName);
+
+  void emit(JNIEnv *Env, jobject Obj, jobject SemanticFuction);
+
+  ~LLVMCodegen();
+
 private:
-    std::unique_ptr<llvm::LLVMContext> TheContext;
-    std::unique_ptr<llvm::IRBuilder<>> Builder;
-    std::unique_ptr<llvm::Module> TheModule;
+  llvm::LLVMContext &Context;
+  llvm::Module &MainModule;
+  llvm::IRBuilder<> &Builder;
 };

@@ -4,11 +4,22 @@
 
 #include <iostream>
 
+namespace {
+
+LLVMCodegen* getNativePtr(JNIEnv *Env, jobject Obj) {
+  jfieldID nativePtrField = Env->GetFieldID(Env->GetObjectClass(Obj), "nativeState", "J");
+  jlong ptr = Env->GetLongField(Obj, nativePtrField);
+  return reinterpret_cast<LLVMCodegen*>(ptr);
+}
+
+} // anonymous namespace
+
 JNIEXPORT void JNICALL 
 Java_transema_codegen_LLVMCodegen_emit
-(JNIEnv *, jobject, jobject)
+(JNIEnv *Env, jobject Obj, jobject SemanticFunction)
 {
-  std::cout << "Emitting LLVM IR" << std::endl;
+  auto state = getNativePtr(Env, Obj);
+  state->emit(Env, Obj, SemanticFunction);
 }
 
 
@@ -16,7 +27,8 @@ JNIEXPORT void JNICALL
 Java_transema_codegen_LLVMCodegen_createNewModule
 (JNIEnv *Env, jobject Obj, jstring ModuleName)
 {
-  LLVMCodegen* state = new LLVMCodegen();
+  const char *cModuleName = Env->GetStringUTFChars(ModuleName, NULL);
+  LLVMCodegen* state = new LLVMCodegen(cModuleName);
 
   jclass cls = Env->GetObjectClass(Obj);
   jfieldID nativePtrField = Env->GetFieldID(cls, "nativeState", "J");
@@ -28,11 +40,6 @@ JNIEXPORT void JNICALL
 Java_transema_codegen_LLVMCodegen_cleanNativeState
 (JNIEnv *Env, jobject Obj)
 {
-  jfieldID nativePtrField = Env->GetFieldID(Env->GetObjectClass(Obj), "nativePtr", "J");
-
-  jlong ptr = Env->GetLongField(Obj, nativePtrField);
-  LLVMCodegen* state = reinterpret_cast<LLVMCodegen*>(ptr);
+  auto state = getNativePtr(Env, Obj);
   delete state;
-
-  Env->SetLongField(Obj, nativePtrField, 0);
 }

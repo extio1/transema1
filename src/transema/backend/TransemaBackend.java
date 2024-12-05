@@ -14,6 +14,7 @@ public class TransemaBackend implements Backend {
     @Override
     public void accept(CompiledDefinition compiledDefinition) {
         System.out.println("TRANSEMA ACCEPTS COMPILED DEFINITION");
+        System.exit(42);
     }
 
     @Override
