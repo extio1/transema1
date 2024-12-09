@@ -27,9 +27,7 @@ public class SemaRulesLoader {
         return iselK;
     }
 
-    public Map<String, Rule> load(String filePath) throws IOException, ClassNotFoundException, InterruptedException {
-        BinaryLoader bl = new BinaryLoader(new KExceptionManager(new GlobalOptions()));
-        CompiledDefinition def = (CompiledDefinition) bl.loadSynchronized(new File(filePath));
+    public Map<String, Rule> getSemanticFunctionRules(CompiledDefinition def) {
         Map<String, Rule> iselToRule = new HashMap<>();
 
         Option<Module> instructionSemaModuleOpt = def
@@ -39,15 +37,6 @@ public class SemaRulesLoader {
         if(instructionSemaModuleOpt.isDefined()){
             Module instructionSemaModule = instructionSemaModuleOpt.get();
             Set<Rule> instructionSemaRules = instructionSemaModule.rules();
-            Set<Production> productionSet = instructionSemaModule.productions();
-
-//            Iterator<Production> prodIt = productionSet.iterator();
-//            while(prodIt.hasNext()){
-//                Production pr = prodIt.next();
-//                System.out.print(pr);
-//                System.out.print(" Terminal: " + pr.arity());
-//                System.out.println(" Arity: " + pr.arity());
-//            }
 
             Iterator<Rule> it = instructionSemaRules.iterator();
             while(it.hasNext()) {
@@ -66,5 +55,11 @@ public class SemaRulesLoader {
         }
 
         return iselToRule;
+    }
+
+    public Map<String, Rule> load(String filePath) throws IOException, ClassNotFoundException, InterruptedException {
+        BinaryLoader bl = new BinaryLoader(new KExceptionManager(new GlobalOptions()));
+        CompiledDefinition def = (CompiledDefinition) bl.loadSynchronized(new File(filePath));
+        return getSemanticFunctionRules(def);
     }
 }

@@ -1,8 +1,12 @@
 #include "transema_codegen_LLVMCodegen.h"
 
 #include "LLVMCodegen/LLVMCodegen.h"
+#include "LLVMCodegen/SemanticFunction.h"
 
 #include <iostream>
+#include <vector>
+
+using namespace transema;
 
 namespace {
 
@@ -16,10 +20,33 @@ LLVMCodegen* getNativePtr(JNIEnv *Env, jobject Obj) {
 
 JNIEXPORT void JNICALL 
 Java_transema_codegen_LLVMCodegen_emit
-(JNIEnv *Env, jobject Obj, jobject SemanticFunction)
+(JNIEnv *Env, jobject Obj, jobject SemaFunc)
 {
   auto state = getNativePtr(Env, Obj);
-  state->emit(Env, Obj, SemanticFunction);
+
+  using namespace transema::semafunc;
+  // TODO: Parse SemanticFunction from .yaml probably
+  SemanticFunction SF = 
+    {
+    .isel = "MOV_GPR64_GPR64", 
+    .writeOpers = {
+      std::vector<Operand> {
+        {.name = "R1", .width = 64, .location = OperandLocation::gpr}
+      }
+    },
+    .readOpers = {
+      std::vector<Operand> {
+        {.name = "R2", .width = 64, .location = OperandLocation::gpr}
+      }
+    },
+    .RSDelta = {
+      std::vector<Assignment> {
+        (Assignment){ .lhs = {.name = "R1", .width = 64, .location = OperandLocation::gpr}, 
+                      .rhs = {.name = "R2", .width = 64, .location = OperandLocation::gpr} }
+      }
+    }
+  };
+  state->emit(SF);
 }
 
 
