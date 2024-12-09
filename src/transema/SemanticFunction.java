@@ -15,45 +15,55 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SemanticFunction {
-    private enum Width {
-        i8,
-        i16,
-        i32,
-        i64
+    private List<AssignLeft> writeArgs = new ArrayList<>();
+    private List<AssignRight> readArgs = new ArrayList<>();
+    private List<SemanticStateChange> changes = new ArrayList<>();
+    private String isel; // TODO: by the way isel may be calculated from arguments
+
+    public SemanticFunction(String isel, Rule rule) {
+        this.isel = isel;
+        this.handleTerm(rule.body());
     }
-    private final Map<String, Width> s2w = new HashMap<String, Width>(){{
-            put("64", Width.i64);
-            put("32", Width.i32);
-            put("16", Width.i16);
-            put("8",  Width.i8);
+
+    public List<AssignLeft> getWriteArgs() { return writeArgs; }
+    public List<AssignRight> getReadArgs() { return readArgs; }
+    public List<SemanticStateChange> getSemanticStateChange() { return changes; }
+    public String getIsel() { return isel; } // TODO: by the way isel may be calculated from arguments
+
+    private final Map<String, Integer> s2w = new HashMap<String, Integer>(){{
+            put("64", 64);
+            put("32", 32);
+            put("16", 16);
+            put("8",  8);
     }};
 
-    private enum Location {
-        registerGpr,
-        registerFlag,
-        memory,
-        immediate
-    }
+    private abstract class Operand {
+        // данные для сериализации в yaml. Для правильной расстановки якорей необходимо
+        // получать ссылку на один и тот же объект, что соотвествует этому операнду
+        // поэтому данные для сериализации лежат сразу удобно в мапе
+        private class OperandOuterInfo {
+            private final Map<String, Object> data = new HashMap<>();
+            public void setName(String name) { data.put("name", name); }
+            public void setWidth(Integer width) { data.put("width", width); }
+            public void setLocation(String location) { data.put("location", location); }
+            public Map<String, Object> getState() { return data; }
+        }
 
-    private abstract class AssignCommon {
-        protected String name;
-        protected Width width;
-        protected Location location;
         protected Boolean isVariable = false;
+        protected OperandOuterInfo data = new OperandOuterInfo();
 
-        public Location getLocation() { return location; }
-        public String getName() { return name; }
-        public Width getWidth() { return width; }
-        public Boolean isVariable() { return isVariable; }
+        public Map<String, Object> getProperties(){
+            return data.getState();
+        }
 
         protected void handleRegister(KApply kApply) {
             String label = kApply.klabel().name();
             List<K> args =  kApply.items();
 
             if (Objects.equals(label, "#SemanticCastToR32")) {
-                width = Width.i32;
+                data.setWidth(32);
             } else if (Objects.equals(label, "#SemanticCastToR64")) {
-                width = Width.i64;
+                data.setWidth(64);
             } else {
                 System.out.println("Unknown width");
                 return;
@@ -64,7 +74,7 @@ public class SemanticFunction {
 
         protected void handleName(K k) {
             if (k instanceof KVariable){
-                name = ((KVariable)k).name();
+                data.setName(((KVariable)k).name());
                 isVariable = true;
             } else {
                 System.out.println("Unknown name");
@@ -86,7 +96,7 @@ public class SemanticFunction {
                 if(!Objects.equals(inputWidth.s(), outputWidth.s())){
                     System.out.println("!Objects.equals(inputWidth.s(), outputWidth.s())");
                 } else {
-                    this.width = s2w.get(outputWidth.s());
+                    data.setWidth(s2w.get(outputWidth.s()));
                 }
             } else {
                 System.out.println("varWidth instanceof KToken && extendedWidth instanceof KToken error");
@@ -94,7 +104,7 @@ public class SemanticFunction {
         }
     }
 
-    private class AssignLeft extends AssignCommon {
+    public class AssignLeft extends Operand {
         public AssignLeft(KApply kApply) {
             handleLocation(kApply);
         }
@@ -104,7 +114,7 @@ public class SemanticFunction {
             List<K> args =  kApply.items();
 
             if (Objects.equals(label, "convToRegKeys")) {
-                location = Location.registerGpr;
+                data.setLocation("gpr");
                 handleRegister((KApply) args.get(0));
             } else {
                 System.out.println("Unknown location!");
@@ -113,7 +123,7 @@ public class SemanticFunction {
         }
     }
 
-    private class AssignRight extends AssignCommon {
+    public class AssignRight extends Operand {
         public AssignRight(KApply kApply) {
                 handleLocation(kApply);
         }
@@ -123,10 +133,10 @@ public class SemanticFunction {
             List<K> args =  kApply.items();
 
             if (Objects.equals(label, "getParentValue")) {
-                location = Location.registerGpr;
+                data.setLocation("gpr");
                 handleRegister((KApply) args.get(0));
             } else if (Objects.equals(label, "handleImmediateWithSignExtend")){
-                location = Location.immediate;
+                data.setLocation("imm");
                 handleImmediate((KApply) args.get(0), args.get(1), args.get(2));
             } else {
                 System.out.println("Unknown location!");
@@ -135,7 +145,7 @@ public class SemanticFunction {
         }
     }
 
-    private static class SemanticStateChange {
+    public static class SemanticStateChange {
         private AssignLeft lhs;
         private AssignRight rhs;
 
@@ -143,34 +153,29 @@ public class SemanticFunction {
             this.lhs = lhs;
             this.rhs = rhs;
         }
+
+        public Map<String, Object> getDelta() {
+            Map<String, Object> map = new HashMap<>();
+            map.put("from", lhs.getProperties());
+            map.put("to", rhs.getProperties());
+            return map;
+        }
     }
 
-    private List<AssignLeft> writeArgs = new ArrayList<>();
-    private List<AssignRight> readArgs = new ArrayList<>();
-    private List<SemanticStateChange> changes = new ArrayList<>();
-
-    public SemanticFunction(String isel, Rule rule) {
-        this.handleTerm(rule.body());
-    }
-
-    public List<AssignLeft> getWriteArgs() { return writeArgs; }
-    public List<AssignRight> getReadArgs() { return readArgs; }
-    public List<SemanticStateChange> getSemanticStateChange() { return changes; }
-
-    private void printDelta(){
-        changes.forEach((c) -> {
-            System.out.println(c.lhs.name);
-            System.out.println(c.lhs.location);
-            System.out.println(c.lhs.width);
-            System.out.println();
-            System.out.println(c.rhs.name);
-            System.out.println(c.rhs.location);
-            System.out.println(c.rhs.width);
-        });
-        System.out.println();
-        writeArgs.forEach((a) -> System.out.println(a.name));
-        readArgs.forEach((a) -> System.out.println(a.name));
-    }
+//    private void printDelta(){
+//        changes.forEach((c) -> {
+//            System.out.println(c.lhs.name);
+//            System.out.println(c.lhs.location);
+//            System.out.println(c.lhs.width);
+//            System.out.println();
+//            System.out.println(c.rhs.name);
+//            System.out.println(c.rhs.location);
+//            System.out.println(c.rhs.width);
+//        });
+//        System.out.println();
+//        writeArgs.forEach((a) -> System.out.println(a.name));
+//        readArgs.forEach((a) -> System.out.println(a.name));
+//    }
 
     private void handleTerm(K term) {
         if (term instanceof KVariable){
@@ -223,12 +228,12 @@ public class SemanticFunction {
 
     private void handleStateAssignment(KApply lhs, KApply rhs) {
         AssignLeft assignTo = new AssignLeft(lhs);
-        if(assignTo.isVariable()) {
+        if(assignTo.isVariable) {
             writeArgs.add(assignTo);
         }
 
         AssignRight assignFrom = new AssignRight(rhs);
-        if(assignFrom.isVariable()){
+        if(assignFrom.isVariable){
             readArgs.add(assignFrom);
         }
 

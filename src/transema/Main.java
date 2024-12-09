@@ -1,12 +1,9 @@
 package transema;
 
 import org.kframework.definition.Rule;
-import org.kframework.main.KModule;
-import transema.codegen.LLVMCodegen;
-import transema.codegen.TransemaCodegen;
 
+import java.io.IOException;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 public class Main {
 
@@ -18,23 +15,18 @@ public class Main {
         String filePath = args[0];
 
         SemaRulesLoader loader = new SemaRulesLoader();
-        TransemaCodegen codegen = new LLVMCodegen();
+        TransemaIREmitter irEmitter = new TransemaIREmitter("semantics");
         Map<String, Rule> ISEL2Rule = loader.load(filePath);
 
         if (!ISEL2Rule.isEmpty()){
-            codegen.createNewModule("llvm_sema_module.ll");
             ISEL2Rule.forEach((k, v) -> {
-//            System.out.println(k);
-//            KTermAnalyser.printKTerm(v.body());
-//            try {
-//                KTermAnalyser.printKTerm(v.body(), "../ast_"+k);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
                 SemanticFunction semanticFunction = new SemanticFunction(k, v);
-                codegen.emit(semanticFunction);
+                try {
+                    irEmitter.emit(semanticFunction);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
-            codegen.cleanNativeState();
         }
 
     }

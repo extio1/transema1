@@ -1,20 +1,12 @@
 package transema.backend;
 
 import com.google.inject.Inject;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.mutable.MutableInt;
 import org.kframework.backend.java.symbolic.JavaBackend;
-import org.kframework.backend.llvm.matching.Matching;
 import org.kframework.kompile.CompiledDefinition;
 import org.kframework.kompile.KompileOptions;
 import org.kframework.main.GlobalOptions;
-import org.kframework.utils.errorsystem.KEMException;
 import org.kframework.utils.errorsystem.KExceptionManager;
 import org.kframework.utils.file.FileUtil;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransemaBackend extends JavaBackend {
     private FileUtil files;
@@ -28,6 +20,7 @@ public class TransemaBackend extends JavaBackend {
     @Override
     public void accept(CompiledDefinition def) {
         String pathToBackend = this.files.getEnv().get("TRANSEMA_BACKEND_PATH");
+
 //        FileUtils.deleteQuietly(this.files.resolveKompiled("dt"));
 //        MutableInt warnings = new MutableInt();
 //        Matching.writeDecisionTreeToFile(this.files.resolveKompiled("definition.kore"), this.options.heuristic, this.files.resolveKompiled("dt"), Matching.getThreshold(this.getThreshold()), this.options.warnUseless, (ex) -> {
