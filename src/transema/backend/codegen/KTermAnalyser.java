@@ -1,4 +1,4 @@
-package transema;
+package transema.backend.codegen;
 
 import org.kframework.kore.ADT;
 import org.kframework.kore.K;
@@ -12,14 +12,10 @@ import org.kframework.kore.KToken;
 import org.kframework.kore.KVariable;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

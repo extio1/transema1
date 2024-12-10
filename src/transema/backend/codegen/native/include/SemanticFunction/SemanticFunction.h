@@ -4,7 +4,6 @@
 #include <vector>
 
 namespace transema {
-namespace semafunc {
 
 enum class OperandLocation {
   gpr,
@@ -32,7 +31,6 @@ struct SemanticFunction {
   std::vector<Assignment> RSDelta;
 };
 
-} // namespace semafunc
 } // namespace transema
 
 

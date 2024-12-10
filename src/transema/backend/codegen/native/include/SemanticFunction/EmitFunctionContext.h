@@ -1,12 +1,11 @@
 #pragma once
 
-#include "SemanticFunction.h"
+#include "SemanticFunction/SemanticFunction.h"
 
 #include <llvm/IR/Value.h>
 #include <map>
 
 namespace transema {
-namespace semafunc {
 
 // class EmitFunctionContext {
 //     explicit EmitFunctionContext(const SemanticFunction &SF);
@@ -22,5 +21,4 @@ struct EmitFunctionContext {
     std::map<std::string, llvm::Value *> NamedValues;
 };
 
-} // namespace semafunc
 } // namespace transema

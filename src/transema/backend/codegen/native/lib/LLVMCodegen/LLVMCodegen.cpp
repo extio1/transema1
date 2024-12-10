@@ -1,6 +1,6 @@
 #include "LLVMCodegen/LLVMCodegen.h"
-#include "LLVMCodegen/SemanticFunction.h"
-#include "LLVMCodegen/EmitFunctionContext.h"
+#include "SemanticFunction/SemanticFunction.h"
+#include "SemanticFunction/EmitFunctionContext.h"
 
 #include <llvm/IR/Type.h>
 
@@ -8,7 +8,6 @@
 
 using namespace llvm;
 using namespace transema;
-using namespace transema::semafunc;
 
 LLVMCodegen::LLVMCodegen(StringRef ModuleName): 
   Context(*new LLVMContext()), 

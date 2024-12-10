@@ -1,4 +1,4 @@
-package transema;
+package transema.backend.codegen;
 
 import org.kframework.definition.Rule;
 import org.kframework.kore.K;

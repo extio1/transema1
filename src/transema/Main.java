@@ -1,6 +1,9 @@
 package transema;
 
 import org.kframework.definition.Rule;
+import transema.backend.codegen.SemaRulesLoader;
+import transema.backend.codegen.SemanticFunction;
+import transema.backend.codegen.TransemaIREmitter;
 
 import java.io.IOException;
 import java.util.Map;

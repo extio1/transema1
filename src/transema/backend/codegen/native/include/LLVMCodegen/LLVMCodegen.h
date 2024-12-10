@@ -1,9 +1,7 @@
 #pragma once
 
-#include "SemanticFunction.h"
-#include "EmitFunctionContext.h"
-
-// #include <jni.h>
+#include "SemanticFunction/SemanticFunction.h"
+#include "SemanticFunction/EmitFunctionContext.h"
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
@@ -17,7 +15,7 @@ class LLVMCodegen {
 public:
   LLVMCodegen(llvm::StringRef ModuleName);
 
-  void emit(const semafunc::SemanticFunction &SF);
+  void emit(const SemanticFunction &SF);
 
   void printModule();
 
@@ -31,8 +29,8 @@ private: // Transema intrinsics //
   // void generateIntrinsic_write_gpr_gpr();
 private:
   static const unsigned AddressSpace = 0;
-  llvm::Function *getFunctionDeclaration(const semafunc::SemanticFunction &SF, semafunc::EmitFunctionContext &EFC) const;
-  void emitStateDelta(const semafunc::EmitFunctionContext &EFC, const semafunc::SemanticFunction &SF, llvm::Function *F);
+  llvm::Function *getFunctionDeclaration(const SemanticFunction &SF, EmitFunctionContext &EFC) const;
+  void emitStateDelta(const EmitFunctionContext &EFC, const SemanticFunction &SF, llvm::Function *F);
 };
 
 } // namespace transema

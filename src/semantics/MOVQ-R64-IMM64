@@ -1,0 +1,7 @@
+write_arguments:
+- &id001 {width: 64, name: R2, location: gpr}
+read_arguments:
+- &id002 {name: Imm64, width: 64, location: imm}
+state_delta:
+- from: *id001
+  to: *id002

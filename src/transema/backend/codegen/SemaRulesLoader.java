@@ -1,8 +1,7 @@
-package transema;
+package transema.backend.codegen;
 
 import org.kframework.attributes.Source;
 import org.kframework.definition.Module;
-import org.kframework.definition.Production;
 import org.kframework.definition.Rule;
 import org.kframework.kompile.CompiledDefinition;
 import org.kframework.main.GlobalOptions;
@@ -22,12 +21,12 @@ public class SemaRulesLoader {
     static final String SEMA_MODULE_NAME = "X86-INSTRUCTIONS-SEMANTICS";
     static final String SEMA_SOURCE_PATH = "x86-instructions-semantics.k";
 
-    private String translateISELToXEDFormat(String iselK) {
+    static private String translateISELToXEDFormat(String iselK) {
         // TODO logic to transform something like MOVL-R32-R32 to XED_FORM_MOVL_GPR32_GPR32
         return iselK;
     }
 
-    public Map<String, Rule> getSemanticFunctionRules(CompiledDefinition def) {
+    static public Map<String, Rule> getSemanticFunctionRules(CompiledDefinition def) {
         Map<String, Rule> iselToRule = new HashMap<>();
 
         Option<Module> instructionSemaModuleOpt = def

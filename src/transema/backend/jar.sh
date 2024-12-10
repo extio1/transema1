@@ -1,4 +1,4 @@
-SOURCES="$(dirname $0)/TransemaBackend.java $(dirname $0)/TransemaKModule.java"
+SOURCES=`find $(dirname $0) -type f -name "*.java"`
 OUT_DIR="$(dirname $0)/out"
 RESULT_JAR_FILE="transema-backend-0.0.1.jar"
 

@@ -1,12 +1,11 @@
 #!/bin/bash
-SOURCES=$(dirname $0)/transema
+SOURCES="transema/Main.java"
+OUT_DIR="$(dirname $0)/out"
+RESULT_JAR_FILE="transema-with-main"
 
-SOURCES="transema/KTermAnalyser.java
-        transema/Main.java
-        transema/SemaRulesLoader.java
-        transema/SemanticFunction.java
-        transema/codegen/TransemaCodegen.java
-        transema/codegen/LLVMCodegen.java"
+rm -rf $OUT_DIR
+mkdir $OUT_DIR
 
 # javac -h "transema/codegen/native" -cp "$(dirname $0)/../kframework/usr/lib/kframework/lib/java/*":. $SOURCES
-javac -cp "$(dirname $0)/../kframework/usr/lib/kframework/lib/java/*":. $SOURCES
+javac -cp "$(dirname $0)/../kframework/usr/lib/kframework/lib/java/*":"transema/*":. -d $OUT_DIR $SOURCES
+jar cvf $RESULT_JAR_FILE -C $OUT_DIR $(dirname $0)
