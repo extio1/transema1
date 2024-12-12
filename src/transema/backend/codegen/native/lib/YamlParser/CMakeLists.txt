@@ -7,5 +7,5 @@ add_library(${TARGET_NAME} SHARED ${SOURCES} ${HEADERS})
 target_include_directories(${TARGET_NAME} PRIVATE ${TRANSEMA_INCLUDE_DIR})
 target_link_libraries(${TARGET_NAME} 
     PUBLIC
-        yaml-cpp
+        LLVMSupport
 )

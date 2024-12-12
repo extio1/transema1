@@ -1,10 +1,11 @@
 #include "LLVMCodegen/LLVMCodegen.h"
+#include "YamlParser/YamlParser.h"
 #include "SemanticFunction/SemanticFunction.h"
 
 #include <llvm/Support/CommandLine.h>
+#include <llvm/Support/raw_ostream.h>
 
 using namespace transema;
-using namespace transema::semafunc;
 
 // TODO USE cl::opt for options (dependencies issues)
 // static llvm::cl::opt<std::string> OutputFilename("o", llvm::cl::desc("The name of the output file containing LLVM IR"), llvm::cl::Required);
@@ -14,32 +15,23 @@ int main(int argc, char **argv) {
   // TODO USE cl::opt for options (dependencies issues)
   // llvm::cl::ParseCommandLineOptions(argc, argv);
   // LLVMCodegen codegen(OutputFilename);
+
+  std::string OutputFilename = "test_semantic.ll"; // TODO: exterminate hardcode 
+  std::string PathToSemaFuncDescs = "/home/extio1/mnt/edu/diploma/transema1/src/semantics"; // TODO: exterminate hardcode 
   
-  LLVMCodegen codegen("test_semantic.ll");
-  const char* PathToSemaFuncDescs = "/home/extio1/mnt/edu/diploma/transema1/src/semantics"; // TODO: exterminate hardcode 
+  LLVMCodegen Codegen(OutputFilename);
+  YamlParser Parser(PathToSemaFuncDescs);
+  
+  auto SFs = Parser.parse();
 
-  SemanticFunction SF = 
-  {
-    .isel = "MOV_GPR64_GPR64", 
-    .writeOpers = {
-      std::vector<Operand> {
-        {.name = "R1", .width = 64, .location = OperandLocation::gpr}
-      }
-    },
-    .readOpers = {
-      std::vector<Operand> {
-        {.name = "R2", .width = 64, .location = OperandLocation::gpr}
-      }
-    },
-    .RSDelta = {
-      std::vector<Assignment> {
-        (Assignment){ .lhs = {.name = "R1", .width = 64, .location = OperandLocation::gpr}, 
-                      .rhs = {.name = "R2", .width = 64, .location = OperandLocation::gpr} }
-      }
-    }
-  };
+  for(auto &SF: SFs) {
+    Codegen.emit(SF);
+  }
 
-  codegen.emit(SF);
-  codegen.printModule();
+  // std::error_code err; TODO: linker issues
+  // auto test_out_file_stream = llvm::raw_fd_stream(OutputFilename, err);
+  // Codegen.printModule(test_out_file_stream);
+  Codegen.printModule(); 
+
   return 0;
 }

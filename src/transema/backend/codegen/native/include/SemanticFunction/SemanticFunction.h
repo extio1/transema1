@@ -13,21 +13,20 @@ enum class OperandLocation {
 };
 
 struct Operand {
-  const char *name;
-  unsigned width;
+  std::string name;
+  uint8_t width;
   OperandLocation location;
 };
 
-struct Assignment
-{
+struct Assignment{
   Operand lhs;
   Operand rhs;
 };
 
 struct SemanticFunction {
-  const char *isel;
-  std::vector<Operand> writeOpers;
-  std::vector<Operand> readOpers;
+  std::string isel;
+  std::vector<std::string> writeOpers;
+  std::vector<std::string> readOpers;
   std::vector<Assignment> RSDelta;
 };
 

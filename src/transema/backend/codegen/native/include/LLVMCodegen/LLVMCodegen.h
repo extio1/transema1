@@ -18,6 +18,7 @@ public:
   void emit(const SemanticFunction &SF);
 
   void printModule();
+  void printModule(llvm::raw_fd_stream &OS);
 
   ~LLVMCodegen();
 private:

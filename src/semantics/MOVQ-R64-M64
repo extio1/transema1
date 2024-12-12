@@ -1,0 +1,6 @@
+isel: MOVQ-R64-M64
+write_arguments: [R2]
+read_arguments: [Mem64]
+state_delta:
+- write_from: {width: 64, name: Mem64, location: mem}
+  to_register: {width: 64, name: R2, location: gpr}

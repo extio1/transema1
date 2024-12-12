@@ -2,11 +2,16 @@
 
 #include "SemanticFunction/SemanticFunction.h"
 
+#include <llvm/Support/YAMLTraits.h>
+
 #include <vector>
 
 namespace transema{
-  class YamlParser{
+  class YamlParser {
     public:
-      std::vector<SemanticFunction> parse(const std::string &pathToDir);
+      explicit YamlParser(llvm::StringRef PathToDirWithYamls);
+      std::vector<SemanticFunction> parse();
+    private:
+      std::string PathToDirWithYamls;      
   };
 } // namespace transema

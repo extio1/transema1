@@ -1,8 +1,9 @@
 package transema;
 
 import org.kframework.definition.Rule;
-import transema.backend.codegen.SemaRulesLoader;
-import transema.backend.codegen.SemanticFunction;
+import transema.backend.astAnalyser.KTermAnalyser;
+import transema.backend.astAnalyser.SemaRulesLoader;
+import transema.backend.astAnalyser.SemanticFunction;
 import transema.backend.codegen.TransemaIREmitter;
 
 import java.io.IOException;
@@ -23,6 +24,11 @@ public class Main {
 
         if (!ISEL2Rule.isEmpty()){
             ISEL2Rule.forEach((k, v) -> {
+                try {
+                    KTermAnalyser.printKTerm(v.body(), "/media/extio1/Data/edu/diploma/ast/"+k);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 SemanticFunction semanticFunction = new SemanticFunction(k, v);
                 try {
                     irEmitter.emit(semanticFunction);

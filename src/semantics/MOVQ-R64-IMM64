@@ -1,7 +1,6 @@
-write_arguments:
-- &id001 {width: 64, name: R2, location: gpr}
-read_arguments:
-- &id002 {name: Imm64, width: 64, location: imm}
+isel: MOVQ-R64-IMM64
+write_arguments: [R2]
+read_arguments: [Imm64]
 state_delta:
-- from: *id001
-  to: *id002
+- write_from: {name: Imm64, width: 64, location: imm}
+  to_register: {width: 64, name: R2, location: gpr}

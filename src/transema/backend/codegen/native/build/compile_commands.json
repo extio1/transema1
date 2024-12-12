@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/build",
+  "command": "/usr/bin/g++ -DTransemaLLVMCodegen_EXPORTS -I/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/include -g -fPIC -o lib/LLVMCodegen/CMakeFiles/TransemaLLVMCodegen.dir/LLVMCodegen.cpp.o -c /media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/lib/LLVMCodegen/LLVMCodegen.cpp",
+  "file": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/lib/LLVMCodegen/LLVMCodegen.cpp"
+},
+{
+  "directory": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/build",
+  "command": "/usr/bin/g++ -DTransemaYamlParser_EXPORTS -I/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/include -g -fPIC -o lib/YamlParser/CMakeFiles/TransemaYamlParser.dir/YamlParser.cpp.o -c /media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/lib/YamlParser/YamlParser.cpp",
+  "file": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/lib/YamlParser/YamlParser.cpp"
+},
+{
+  "directory": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/build",
+  "command": "/usr/bin/g++ -I/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/include -g -o tools/transema-codegen/CMakeFiles/transema-codegen.dir/main.cpp.o -c /media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/tools/transema-codegen/main.cpp",
+  "file": "/media/extio1/Data/edu/diploma/transema1/src/transema/backend/codegen/native/tools/transema-codegen/main.cpp"
+}
+]

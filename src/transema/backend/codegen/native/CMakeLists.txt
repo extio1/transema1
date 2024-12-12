@@ -9,6 +9,6 @@ set(TRANSEMA_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
 find_package(LLVM REQUIRED CONFIG)
 
-add_subdirectory(external)
+# add_subdirectory(external)
 add_subdirectory(lib)
 add_subdirectory(tools)
