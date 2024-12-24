@@ -4,17 +4,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.multibindings.MapBinder;
 import org.apache.commons.lang3.tuple.Pair;
-import org.kframework.backend.llvm.LLVMBackend;
-import org.kframework.backend.llvm.LLVMBackendKModule;
 import org.kframework.backend.llvm.LLVMKompileOptions;
 import org.kframework.compile.Backend;
 import org.kframework.main.AbstractKModule;
 
 import java.util.Collections;
 import java.util.List;
-
-import java.io.File;
-import java.io.IOException;
 
 public class TransemaKModule extends AbstractKModule {
     public TransemaKModule() {

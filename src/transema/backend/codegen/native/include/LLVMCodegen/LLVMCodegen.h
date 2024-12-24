@@ -20,6 +20,8 @@ public:
   void printModule();
   void printModule(llvm::raw_fd_stream &OS);
 
+  bool verifyModule(llvm::raw_ostream *OS);
+
   ~LLVMCodegen();
 private:
   llvm::LLVMContext &Context;

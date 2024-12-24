@@ -1,4 +1,4 @@
-isel: MOVQ-R64-M64
+isel: ISEL_MOV_GPRv_MEMv_64
 write_arguments: [R2]
 read_arguments: [Mem64]
 state_delta:

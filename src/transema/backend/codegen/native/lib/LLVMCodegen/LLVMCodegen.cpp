@@ -3,6 +3,7 @@
 #include "SemanticFunction/EmitFunctionContext.h"
 
 #include <llvm/IR/Type.h>
+#include <llvm/IR/Verifier.h>
 
 #include <iostream>
 
@@ -75,7 +76,6 @@ Function *LLVMCodegen::getFunctionDeclaration(const SemanticFunction &SF, EmitFu
 
   FunctionType *FT = FunctionType::get(PointerType::get(Context, AddressSpace), InputArgumentsFuncType, false);
 
-  // TODO change linkage to Internal + make global var referring this function
   Function *F = Function::Create(FT, Function::InternalLinkage, Twine(SF.isel)+"_func", MainModule);
   GlobalVariable *GV = new GlobalVariable(MainModule, F->getType(), true, GlobalValue::ExternalLinkage, F, Twine(SF.isel));
 
@@ -86,6 +86,10 @@ Function *LLVMCodegen::getFunctionDeclaration(const SemanticFunction &SF, EmitFu
   }
 
   return F;
+}
+
+bool LLVMCodegen::verifyModule(llvm::raw_ostream *OS) {
+  return llvm::verifyModule(MainModule, OS);
 }
 
 // void LLVMCodegen::generateIntrinsic_write_gpr_gpr() {

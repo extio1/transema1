@@ -31,7 +31,9 @@ int main(int argc, char **argv) {
   // std::error_code err; TODO: linker issues
   // auto test_out_file_stream = llvm::raw_fd_stream(OutputFilename, err);
   // Codegen.printModule(test_out_file_stream);
-  Codegen.printModule(); 
-
+  if(!Codegen.verifyModule(&llvm::errs())) {
+    Codegen.printModule(); 
+  }
+  
   return 0;
 }

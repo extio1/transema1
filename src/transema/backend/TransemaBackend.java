@@ -1,27 +1,14 @@
 package transema.backend;
 
 import com.google.inject.Inject;
-import org.kframework.backend.java.symbolic.JavaBackend;
 import org.kframework.backend.kore.KoreBackend;
-import org.kframework.compile.ResolveHeatCoolAttribute;
 import org.kframework.definition.Definition;
 import org.kframework.definition.Module;
-import org.kframework.definition.Rule;
 import org.kframework.kompile.CompiledDefinition;
 import org.kframework.kompile.KompileOptions;
-import org.kframework.main.GlobalOptions;
-import org.kframework.utils.errorsystem.KEMException;
 import org.kframework.utils.errorsystem.KExceptionManager;
 import org.kframework.utils.file.FileUtil;
-import transema.backend.astAnalyser.SemaRulesLoader;
-import transema.backend.astAnalyser.SemanticFunction;
-import transema.backend.codegen.TransemaIREmitter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
