@@ -1,0 +1,6 @@
+isel: CVTSI2SSQ-XMM-M64
+write_arguments: []
+read_arguments: []
+state_delta:
+- write_from: {}
+  to_register: {location: gpr}

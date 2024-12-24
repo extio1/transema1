@@ -1,0 +1,6 @@
+isel: MOVL-R32-R32
+write_arguments: [R2]
+read_arguments: []
+state_delta:
+- write_from: {}
+  to_register: {width: 32, name: R2, location: gpr}
