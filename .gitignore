@@ -1,0 +1,44 @@
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+### java ###
+*.class
+
+### ast ###
+ast_*
+
+### cmake build files ###
+src/transema/codegen/native/build/*
+src/frontend/out/*
+transema/out/*
+src/frontend/java/*
+src/backend/venv/*
+nfs/X86-64-semantics/semantics/x86-semantics-kompiled/*
+
